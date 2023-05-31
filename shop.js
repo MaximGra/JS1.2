@@ -1,6 +1,4 @@
-var readline = require('readline-sync');
-
-var catalog = [
+const product = [
     {
         id: '1',
         name: 'Телефон',          
@@ -43,92 +41,54 @@ var catalog = [
     },   
 ];
 
-var basket = [
+let basket = [
     {
-        good: [catalog[0], catalog[1],],
-        amount: 2,
+        good: product[0],
+        amount: 3,
+    },
+    {
+        good: product[3],
+        amount: 1,
     }
-];
-     
-function product_add(userBasket, product,){
-    newBasket = userBasket.good.concat(product);
-    basket[0].good= newBasket
-    let totalAmount = newBasket.length;
-    userBasket.amount = totalAmount
-    return console.log('Продукт добавлен, Ваша корзина:',newBasket)
-}
+]
 
-
-
-function product_del(userBasket, product){
-    for(let i = 0; i <= (basket[0].good.length); i++){
-        if(userBasket.good.includes(product)){
-            if(userBasket.good[i].id == product.id){
-                basket[0].good.splice(i,i + 1);
-                console.log(`Продукт удален`);
-                break;
-            }
-            else{
-                continue;
-            }
-        }
-        else {
-            console.log('Вы выбрали товар, которого нет в корзине')
-            break;
-        }
+function addBasket(i, n) {
+    const newItem = {
+        good: product[i],
+        amount: +n,
     }
-    basket[0].amount = userBasket.good.length
-    return console.log('Ваши продукты:', basket[0].good)
+    basket.push(newItem) 
+    return basket
 }
 
-
-function del_all(userBasket){
-    basket[0].amount = 0;
-    newBasket = []
-    basket[0].good= newBasket
-    return console.log('Корзина очищена', basket[0])
-
+function cleanBasket() {
+    basket = []
+    return basket
 }
 
-function total(userBasket){
-    let totalSumm = 0;
-    for(let i = 0; i <= (basket[0].good.length - 1); i++){
-        totalSumm = totalSumm + userBasket.good[i].price;
+function deleteItem(i) {
+    basket.splice(i, 1)
+    return basket
+}
+
+function resultBasket () {
+    var totalAmount = 0;
+    var totalSumm = 0;
+    var index, len;
+    for (index = 0, len = basket.length; index < len; ++index) {
+        totalAmount = totalAmount + basket[index].amount;
+        totalSumm = totalSumm + basket[index].good.price * basket[index].amount
     }
-    return console.log(`Количество товаров в корзине: ${basket[0].good.length},\nСумма товаров: ${totalSumm}`)
-}
-
-
-
-function menu(){
-    console.log(`\t\t\t**** МЕНЮ **** 
-                Для добавления продукта нажмите - 1
-                Для удаления продукта нажмите - 2
-                Для очистки корзины нажмите - 3
-                Для уточнения количества и суммы товаров нажмите - 4
-                Для выхода из программы нажмите - 5
-                Для вывода меню нажмите - 6`)
-    while(true){
-        var user_input = readline.question("Vvedite chislo: ");
-        if (user_input == 1){
-            product_add(basket[0], catalog[2]);
-        }
-        else if (user_input == 2){
-            product_del(basket[0], catalog[0]);
-        }
-        else if (user_input == 3){
-            del_all(basket[0]);
-        }
-        else if (user_input == 4){
-            total(basket[0]);
-        }
-        else if (user_input == 5){
-            break;
-        }
-        else if (user_input = 6){
-            menu();
-        }
+    let resultBasket = {
+        totalAmount: totalAmount,
+        totalSumm: totalSumm,
     }
+    return resultBasket
 }
 
-menu()
+console.log(addBasket(4, 2))
+console.log(deleteItem(0))
+console.log(resultBasket())
+
+console.log(cleanBasket())
+console.log(resultBasket())

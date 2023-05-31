@@ -1,24 +1,23 @@
-function numbers(n) {
-    const seive = []
-    const primes = []
-    let counter = 0
-
-    for (let i = 2; i <= n * 100; i++){
-        if (counter < n){
-            if(!seive[i]) {
-                counter ++
-                primes.push(i);
-                for(let j = i * 2; j <= n * 100; j += i){
-                    seive[j] = true;
-                }
+function simpleNumber(n) {
+    listnumber = [2]
+    for (let i = 3; listnumber.length < n-1; i++) {  
+        // console.log(i);
+        var flag = 0
+        for (let elem of listnumber) {
+            if (i % elem == 0) {
+                flag = 1
+                // console.log('и все таки оно делится!');
             }
-        }
-        else{
-            break;
+        } 
+        if (flag == 0) {
+            listnumber.push(i)
         }
     }
-    return console.log('Первые', n, 'простых чисел:', primes);
+    listnumber.unshift(1)
+    return listnumber
 }
 
 
-numbers(process.argv[2])
+console.time('simpleNumber')
+console.log(simpleNumber(process.argv[2]))
+console.timeEnd('simpleNumber')
